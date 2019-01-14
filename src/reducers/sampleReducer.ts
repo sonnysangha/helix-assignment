@@ -3,22 +3,22 @@ import { AnyAction } from 'redux';
 
 import * as data from '../data';
 
-
 export type sampleReducerState = {
-  categoryMapping: any;
   images: any[];
+  loading: boolean
 }
 
 const initialState: sampleReducerState = {
-  categoryMapping: [],
   images: data.default.imageFiles,
+  loading: false,
 };
 
 const sampleReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case types.LOAD_IMAGES_SUCCESS:
-      console.log('MADE IT TO THE REDUCER > ', action);
-      return { ...state, categoryMapping: action.categoryMapping };
+    case types.START_LOADING:
+      return { ...state, loading: true };
+    case types.STOP_LOADING:
+      return { ...state, loading: false };
     default:
       return state;
   }

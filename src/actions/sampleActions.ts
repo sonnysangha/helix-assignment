@@ -1,15 +1,14 @@
 import { Action } from "redux";
 
 export enum types {
-  LOAD_IMAGES = 'LOAD_IMAGES',
-  LOAD_IMAGES_SUCCESS = 'LOAD_IMAGES_SUCCESS',
+  START_LOADING = 'START_LOADING',
+  STOP_LOADING = 'STOP_LOADING',
 }
 
-export const loadImages = (): Action => ({
-  type: types.LOAD_IMAGES,
+export const startLoading = (): Action => ({
+  type: types.START_LOADING,
 });
 
-export const loadImagesSuccess = (categoryMapping: any): any => ({
-  type: types.LOAD_IMAGES_SUCCESS,
-  categoryMapping,
+export const stopLoading = (): Action => ({
+  type: types.STOP_LOADING,
 });

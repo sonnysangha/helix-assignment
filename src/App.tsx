@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { bindActionCreators, Dispatch } from 'redux';
+import { bindActionCreators, Dispatch, Action } from 'redux';
 import Viewer from 'react-viewer';
 import Spinner from 'react-spinkit';
 
@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { ImageDecorator } from 'react-viewer/lib/ViewerProps';
 import { AppState } from './reducers/rootReducer';
+import { startLoading, stopLoading } from './actions/sampleActions';
 
 import './App.scss';
 import 'react-viewer/dist/index.css';
@@ -22,13 +23,15 @@ vision.init({ auth: config.VISION_API_KEY });
 
 type Props = {
   images: string[],
+  startLoading: () => Action;
+  stopLoading: () => Action;
+  loading: boolean;
 }
 
 type State = {
   visible: boolean,
   categoryMapping: any[],
   selectedImage: ImageDecorator,
-  loading: boolean,
 }
 
 class App extends Component<Props, State> {
@@ -37,7 +40,6 @@ class App extends Component<Props, State> {
 
     this.state = {
       visible: false,
-      loading: false,
       categoryMapping: [],
       selectedImage: {
         src: ''
@@ -45,10 +47,18 @@ class App extends Component<Props, State> {
     }
   }
 
+  /**
+   * NOT a good idea to have ASYNC operations inside a component!
+   * 
+   * Given more time i'd move this to dispatch a 'LoadImages' action which would be handled
+   * via Redux-Saga and upon completion would dispatch a 'LoadImagesSuccess' action
+   * which would update the 'categoryMapping' variable in a reducer which would then
+   * be used to render the component
+   */
   async componentWillMount() {
     const categoryMapping: any = [];
     let noOfImagesLoaded = 0;
-    this.setState({ loading: true });
+    this.props.startLoading();
 
     await this.props.images.forEach(async imageUrl => {
       const sourceUrl = `https://storage.googleapis.com/${imageUrl}`;
@@ -79,7 +89,7 @@ class App extends Component<Props, State> {
         this.setState({ categoryMapping })
         noOfImagesLoaded++;
         // Turn loader off when we near the number of images in the file (some may not load)
-        if (noOfImagesLoaded > this.props.images.length - 10) this.setState({ loading: false })
+        if (noOfImagesLoaded > this.props.images.length - 10) this.props.stopLoading()
 
       } catch (e) {
         // In the event a request fails, we log & prevent a crash
@@ -97,7 +107,7 @@ class App extends Component<Props, State> {
         <Typography variant="subtitle1" gutterBottom className="text subheading">
           Find the images seperated below by category, select one to open the viewer!
         </Typography>
-        {this.state.loading &&
+        {this.props.loading &&
           <Spinner className="spinner" name='chasing-dots' />}
 
         {
@@ -112,7 +122,7 @@ class App extends Component<Props, State> {
                 />
                 {
                   //@ts-ignore
-                  this.state.categoryMapping[category].map(image => (
+                  this.state.categoryMapping[category].map((image: ImageDecorator) => (
                     <img
                       className="image"
                       src={image.src}
@@ -144,10 +154,14 @@ class App extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  images: getImages(state),
+  images: getImages(state), // example of a selector
+  loading: state.sample.loading
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({}, dispatch);
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+  startLoading,
+  stopLoading,
+}, dispatch);
 
 const AppConnect = connect(
   mapStateToProps,

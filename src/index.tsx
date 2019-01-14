@@ -24,6 +24,9 @@ const store = createStore(
 
 );
 
+/**
+ * Example of React-Router implementation, here we can easily add additional routes if needed
+ */
 ReactDOM.render(
   <Provider store={store}>
     <Router>
