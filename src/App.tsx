@@ -15,9 +15,10 @@ import { AppState } from './reducers/rootReducer';
 import './App.scss';
 import 'react-viewer/dist/index.css';
 import { getImages } from './selectors/sampleSelector';
+import { config } from './env';
 
 const vision = require('node-cloud-vision-api');
-vision.init({ auth: 'AIzaSyBaVgdjfBjX-S5EfKhvdZj_DKhju9mbPNI' });
+vision.init({ auth: config.VISION_API_KEY });
 
 type Props = {
   images: string[],
