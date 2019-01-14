@@ -10,3 +10,4 @@ export enum config {
 
 Then run `npm i` to install all dependancies and `npm start` to run!
 
+![demo](https://i.imgur.com/F4GVSN6.png)
