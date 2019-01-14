@@ -1,28 +1,17 @@
-import { takeEvery } from 'redux-saga/effects';
-import { types as sampleTypes } from '../actions/sampleActions';
+import { takeEvery, put } from 'redux-saga/effects';
+import { types as sampleTypes, loadImagesSuccess } from '../actions/sampleActions';
 import { SagaIterator } from 'redux-saga';
+import _ from 'lodash';
 
-function* sampleGeneratorFunction(action: any): SagaIterator {
-    // API async call could happen here
+import * as data from '../data';
 
-    // const { email } = action.payload;
-    // try {
-    //     yield api(
-    //         '/oauth/challenge',
-    //         'POST',
-    //         {
-    //             username: email,
-    //             challenge_type: 'admin-login',
-    //         },
-    //         true,
-    //         false,
-    //     );
-    //     yield put(sendDynamicLinkSuccess());
-    // } catch (e) {
-    //     yield put(sendDynamicLinkFailure());
-    // }
+const vision = require('node-cloud-vision-api')
+vision.init({ auth: 'AIzaSyBaVgdjfBjX-S5EfKhvdZj_DKhju9mbPNI' })
+
+function* loadImages(): SagaIterator {
+    console.log('abc');
 }
 
 export default function* sampleSaga() {
-    yield takeEvery(sampleTypes.SAMPLE_CALLED, sampleGeneratorFunction);
+    yield takeEvery(sampleTypes.LOAD_IMAGES, loadImages);
 }

@@ -1,20 +1,24 @@
 import { types } from '../actions/sampleActions';
 import { AnyAction } from 'redux';
 
+import * as data from '../data';
+
+
 export type sampleReducerState = {
-  reveal: boolean,
-  sampleValue: string,
+  categoryMapping: any;
+  images: any[];
 }
 
 const initialState: sampleReducerState = {
-  reveal: false,
-  sampleValue: 'alive thanks to Redux stuff!'
+  categoryMapping: [],
+  images: data.default.imageFiles,
 };
 
 const sampleReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case types.SAMPLE_CALLED:
-      return { ...state, reveal: action.value };
+    case types.LOAD_IMAGES_SUCCESS:
+      console.log('MADE IT TO THE REDUCER > ', action);
+      return { ...state, categoryMapping: action.categoryMapping };
     default:
       return state;
   }

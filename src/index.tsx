@@ -10,7 +10,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './reducers/rootReducer';
 import sampleSaga from './sagas/sampleSaga';
-import TestComponent from './Component';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -29,7 +28,6 @@ ReactDOM.render(
   <Provider store={store}>
     <Router>
       <Switch>
-        <Route path="/test" component={TestComponent} />
         <Route path="/" exact component={App} />
       </Switch>
     </Router>
@@ -38,6 +36,6 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls. Learn
 // more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();
 
 sagaMiddleware.run(sampleSaga);

@@ -1,13 +1,15 @@
 import { Action } from "redux";
 
 export enum types {
-  SAMPLE_CALLED = 'SAMPLE_CALLED',
+  LOAD_IMAGES = 'LOAD_IMAGES',
+  LOAD_IMAGES_SUCCESS = 'LOAD_IMAGES_SUCCESS',
 }
 
-export type sampleCalledAction = {
-  value: boolean
-}
-export const sampleCalled = (value: boolean): Action & sampleCalledAction => ({
-  type: types.SAMPLE_CALLED,
-  value
+export const loadImages = (): Action => ({
+  type: types.LOAD_IMAGES,
+});
+
+export const loadImagesSuccess = (categoryMapping: any): any => ({
+  type: types.LOAD_IMAGES_SUCCESS,
+  categoryMapping,
 });
