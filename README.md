@@ -1,5 +1,7 @@
 ## Helix Assignment
 
+This project uses the Google Vision API to categorise an array of images provided in `src/data.js`
+
 To run the project, simply add the file `env.ts` into the `src/` directory and place the following contents inside (replacing where appropriate):
 
 ```
